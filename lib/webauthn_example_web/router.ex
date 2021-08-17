@@ -4,19 +4,12 @@ defmodule WebauthnExampleWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
   pipeline :api do
     plug :accepts, ["json"]
-  end
-
-  scope "/", WebauthnExampleWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -38,5 +31,11 @@ defmodule WebauthnExampleWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: WebauthnExampleWeb.Telemetry
     end
+  end
+
+  scope "/", WebauthnExampleWeb do
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 end
